@@ -1,8 +1,8 @@
 
 CC=g++
 
-#CFLAGS=-Wall -lSDL_ttf -lSDL
-CFLAGS=-lSDL_ttf -lSDL -D__SDL12__
+#CFLAGS=-Wall -lSDL_ttf -lSDL2 -D__SDL20__
+CFLAGS=-lSDL2_ttf -lSDL2 -D__SDL20__
 
 DEPS = Block.cpp Shape.cpp GameBoard.cpp DrawSdl.cpp GameSdl.cpp   main.cpp
 OBJ  = Block.o   Shape.o   GameBoard.o   DrawSdl.o   GameSdl.o     main.o   

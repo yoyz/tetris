@@ -62,9 +62,9 @@ class DrawSdl
 
   Uint32 couleurs[NB_COLORS];
 
-  char nb_line[20];
+  char nb_line[20];  
 
-  SDL_Surface *screen;
+  SDL_Surface *screen;  
   SDL_Surface *carre;
   SDL_Surface *text;
   SDL_Surface *texte;
@@ -91,6 +91,10 @@ class DrawSdl
   SDL_Color sdl_color_black;
   SDL_Color sdl_color_white;  
 
+
+#ifdef __SDL20__
+  SDL_Window * window;
+#endif
 
 
 

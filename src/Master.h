@@ -13,9 +13,22 @@
 
 
 //Include the standard library
+#if !defined(__SDL12__) && !defined(__SDL20__)
+#error "need"
+#endif
+
+#if defined(__SDL12__)
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_getenv.h>
+#endif
+
+#if defined(__SDL20__)
+//#elsif __SDL20__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+//#include <SDL2/SDL_getenv.h>
+#endif
 
 #include <string>
 #include <vector>

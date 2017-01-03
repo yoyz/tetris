@@ -5,7 +5,7 @@ using namespace  std;
 
 SDL_Color sdl_color_black = {0, 0, 0};
 SDL_Color sdl_color_white = {250, 250, 250};
-
+char * str="SDL_VIDEO_CENTERED=1";
 
 DrawSdl::DrawSdl()
 {
@@ -53,7 +53,9 @@ void DrawSdl::free_ttf_data()
 
 void DrawSdl::enable_sdl_and_ttf()
 {
-  putenv("SDL_VIDEO_CENTERED=1");
+  
+  //putenv("SDL_VIDEO_CENTERED=1");
+  putenv(str);
   SDL_Init(SDL_INIT_VIDEO); 
   TTF_Init(); 
 }
@@ -81,12 +83,27 @@ void DrawSdl::load_sdl_screen_data()
 }
 
 
+#ifdef __SDL12__
 void DrawSdl::screen_activate()
 {
   screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, SCREEN_BIT_RESOLUTION, SDL_HWSURFACE | SDL_DOUBLEBUF);
   SDL_WM_SetCaption(WM_CAPTION, NULL);
 }
+#endif
 
+#ifdef __SDL20__
+void DrawSdl::screen_activate()
+{
+  window = SDL_CreateWindow("Ma fenêtre de jeu",
+                            SDL_WINDOWPOS_UNDEFINED,
+                            SDL_WINDOWPOS_UNDEFINED,
+                            SCREEN_SIZE_X, SCREEN_SIZE_Y,
+                            SDL_WINDOW_SHOWN);
+  screen=SDL_GetWindowSurface( window );
+  // screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, SCREEN_BIT_RESOLUTION, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  // SDL_WM_SetCaption(WM_CAPTION, NULL);
+}
+#endif
 
 void DrawSdl::draw_number_of_line(int number_of_line)
 {
@@ -223,12 +240,18 @@ void DrawSdl::init_colors(void)
   couleurs[C_BLANC]         = SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF);
 }
 
-
+#ifdef __SDL12__
 void DrawSdl::refresh()
 {
   SDL_Flip(screen);  
 }
-
+#endif
+#ifdef __SDL20__
+void DrawSdl::refresh()
+{
+  SDL_UpdateWindowSurface( window );
+}
+#endif
 
 void DrawSdl::draw_shape_on_board(Shape * shape)
 				   
