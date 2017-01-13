@@ -84,9 +84,9 @@ class DrawSdl
   SDL_Rect position;
   SDL_Rect board_position;
 
-  TTF_Font * font_large;
-  TTF_Font * font_medium;
-  TTF_Font * font_small;
+  //TTF_Font * font_large;
+  //TTF_Font * font_medium;
+  //TTF_Font * font_small;
   
   SDL_Color sdl_color_black;
   SDL_Color sdl_color_white;  

@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
   int pid;
   int uid;
   
-  uid=getuid();
+  //uid=getuid();
   if (uid==0)
     {
       cout << "I am root, launch me as a real user" << endl;

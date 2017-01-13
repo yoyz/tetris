@@ -4,7 +4,7 @@
 #include "GameBoard.h"
 #include "GameSdl.h"
 #include "DrawSdl.h"
-
+#include <psp2/ctrl.h>
 
 
 using namespace std;
@@ -72,7 +72,8 @@ int game_play(DrawSdl on_screen)
   int delay=50;
   bool event_to_draw=true;
   bool shape_to_insert=false;
-
+  SceCtrlData     pad;
+  
   cont=1;
   create_two_shape();   
   
@@ -82,7 +83,44 @@ int game_play(DrawSdl on_screen)
       current_sdl_time = SDL_GetTicks();
 
       shape_to_insert=current_sdl_time-previous_sdl_time>1000/level_number;
+
+      sceCtrlPeekBufferPositive(0, &pad, 1);
+      if (pad.buttons == (SCE_CTRL_LTRIGGER | SCE_CTRL_RTRIGGER))
+	cont=0;
+
+      if (pad.buttons & SCE_CTRL_DOWN)	{
+	  if (GB.can_shape_move_down(current_shape))
+	    current_shape->move_down();
+	  event_to_draw=true;
+      }
+      if (pad.buttons & SCE_CTRL_RIGHT)	{
+      	      delay=delay+25;
+	      if (GB.can_shape_move_right(current_shape))
+		current_shape->move_right();
+	      event_to_draw=true;
+      }
+      if (pad.buttons & SCE_CTRL_LEFT)	{
+		      delay=delay+25;
+	      if (GB.can_shape_move_left(current_shape))
+		current_shape->move_left();
+	      event_to_draw=true;
+      }
+      if (pad.buttons & SCE_CTRL_UP)	{
+		      delay=delay+150;
+	      if (GB.can_shape_rotate(current_shape))
+		current_shape->rotate_clockwize();
+	      event_to_draw=true;
+      }
+      if (pad.buttons & SCE_CTRL_RTRIGGER)	{
+	delay=delay+150;
+	while (GB.can_shape_move_down(current_shape))
+	  current_shape->move_down();
+	event_to_draw=true;
+
+      }
       
+
+      /*      
       SDL_PollEvent(&event);
 
       switch(event.type)
@@ -137,7 +175,7 @@ int game_play(DrawSdl on_screen)
 	      break;
 	    }
 	}
-	  
+      */
       
       if (!(GB.can_shape_move_down(current_shape)) &&
 	  shape_to_insert)
@@ -222,7 +260,7 @@ int game_start()
   on_screen.draw_press_enter_to_play();
   //  on_screen.initColors();  
   on_screen.refresh();
-
+  /*
   while (!userWantedToQuit)
     {
       SDL_Delay(200);
@@ -253,7 +291,12 @@ int game_start()
 	      break;
 	    }
 	}
-    }
+	}
+  */
+    
+  setup_new_game();
+  GB.zero_map();
+  game_play(on_screen);
  
   on_screen.free_sdl_screen_data();
   on_screen.free_ttf_data();
